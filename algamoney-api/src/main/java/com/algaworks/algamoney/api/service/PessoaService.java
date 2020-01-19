@@ -12,7 +12,7 @@ import com.algaworks.algamoney.api.repository.PessoaRepository;
 public class PessoaService {
 	
 	@Autowired
-	PessoaRepository pessoaRepository;
+	private PessoaRepository pessoaRepository;
 	
 	public Pessoa atualizar(Long codigo, Pessoa pessoa) {
 		Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
