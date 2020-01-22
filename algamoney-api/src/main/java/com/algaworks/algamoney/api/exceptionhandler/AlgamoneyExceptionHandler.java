@@ -50,9 +50,10 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 	//@ResponseStatus(HttpStatus.NOT_FOUND) //Se não quiser colocar nada no método basta retornar assim e não precisa ter parâmetros no método
 	//Retorno do método deve ser void nesse caso
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+		
 		//Código opcional caso queira devolver mensagem na resposta
 		String mensagemUsuario = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
-		String mensagemDesenvolvedor = ex.toString();
+		String mensagemDesenvolvedor = ex.getMostSpecificCause().toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 		
