@@ -1,19 +1,97 @@
-import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { ToastyService } from 'ng2-toasty';
+import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/api';
+
+import { PessoaFiltro, PessoaService } from './../pessoa.service';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
+
+
 
 @Component({
   selector: 'app-pessoas-pesquisa',
   templateUrl: './pessoas-pesquisa.component.html',
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
-export class PessoasPesquisaComponent {
+export class PessoasPesquisaComponent implements OnInit {
 
-  pessoas = [
-    { nome: 'Manoel Pinheiro', cidade: 'Uberlândia', estado: 'MG', ativo: true },
-    { nome: 'Sebastião da Silva', cidade: 'São Paulo', estado: 'SP', ativo: false },
-    { nome: 'Carla Souza', cidade: 'Florianópolis', estado: 'SC', ativo: true },
-    { nome: 'Luís Pereira', cidade: 'Curitiba', estado: 'PR', ativo: true },
-    { nome: 'Vilmar Andrade', cidade: 'Rio de Janeiro', estado: 'RJ', ativo: false },
-    { nome: 'Paula Maria', cidade: 'Uberlândia', estado: 'MG', ativo: true }
-  ];
+  totalRegistros = 0
+  filtro = new PessoaFiltro();
+  pessoas = [];
+  @ViewChild('tabela') grid;
+
+  constructor(
+    private pessoaService: PessoaService,
+    private errorHandler: ErrorHandlerService,
+    private toasty: ToastyService,
+    private confirmation: ConfirmationService,
+    private title: Title
+    ) { }
+
+  ngOnInit() {
+    // this.pesquisar()
+    this.title.setTitle('Pesquisa de pessoas')
+  }
+
+  pesquisar(pagina = 0) {
+    this.filtro.pagina = pagina
+
+    this.filtro.pagina === 0 ? this.grid.first = 0 : this.grid.first = this.grid.first
+
+    this.pessoaService
+      .pesquisar(this.filtro)
+      .then((resultado) => {
+        this.totalRegistros = resultado.total
+        this.pessoas = resultado.pessoas
+      });
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    const pagina = event.first / event.rows
+    this.pesquisar(pagina)
+  }
+
+  confirmarExclusao(pessoa: any) {
+    this.confirmation.confirm({
+      message: `Tem certeza que deseja excluir a pessoa de nome ${pessoa.nome}?`,
+      accept: () => {
+        this.excluir(pessoa)
+      }
+    })
+  }
+
+  excluir(pessoa: any) {
+
+    this.pessoaService.excluir(pessoa.codigo)
+      .then(() => {
+
+        // Essa solução vai manter na mesma página
+        if (this.pessoas.length === 1 &&
+          this.filtro.pagina > 0) {
+          this.grid.first = (this.filtro.pagina - 1)
+            * this.filtro.itensPorPagina; // que dispara o evento e chama o pesquisar na página anterior
+        } else {
+          this.pesquisar(this.filtro.pagina); // pesquisa na página atual
+        }
+
+        this.toasty.success(`${pessoa.nome} excluído(a) com sucesso`)
+
+      }).catch(erro => this.errorHandler.handle(erro))
+  }
+
+  alternarStatus(pessoa: any): void {
+
+    const novoStatus = !pessoa.ativo
+
+    this.pessoaService.mudarStatus(pessoa.codigo, novoStatus)
+      .then(() => {
+        const acao = novoStatus ? 'ativado(a)' : 'desativado(a)';
+
+        pessoa.ativo = novoStatus;
+        this.toasty.success(`${pessoa.nome} ${acao} com sucesso!`);
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
 
 }

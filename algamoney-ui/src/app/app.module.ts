@@ -5,9 +5,10 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
-import { LancamentoService } from './lancamentos/lancamento.service';
 import { PessoasModule } from './pessoas/pessoas.module';
 import { CoreModule } from './core/core.module';
+import { AppRoutingModule } from './app-routing.module';
+import { SegurancaModule } from './seguranca/seguranca.module';
 
 @NgModule({
   declarations: [
@@ -18,12 +19,14 @@ import { CoreModule } from './core/core.module';
     BrowserAnimationsModule,
     HttpModule,
 
+    CoreModule,
     LancamentosModule,
     PessoasModule,
+    SegurancaModule,
+    AppRoutingModule
 
-    CoreModule
   ],
-  providers: [LancamentoService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
