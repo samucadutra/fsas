@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Http, RequestOptions } from '@angular/http';
 
-import { ButtonModule } from 'primeng/components/button/button';
-import { InputTextModule } from 'primeng/components/inputtext/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
 
 import { SegurancaRoutingModule } from './seguranca-routing.module';

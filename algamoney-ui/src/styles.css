@@ -34,9 +34,17 @@ a:hover, a:focus {
   text-align: right;
 }
 
+.col-valor-header {
+  width: 120px;
+}
+
 .col-data {
   width: 120px;
   text-align: center;
+}
+
+.col-data-header {
+  width: 120px;
 }
 
 .col-acoes {
@@ -44,4 +52,7 @@ a:hover, a:focus {
   text-align: center;
 }
 
+.col-acoes-header {
+  width: 90px;
+}
 

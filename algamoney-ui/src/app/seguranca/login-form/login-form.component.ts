@@ -4,6 +4,7 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login-form',
@@ -16,11 +17,13 @@ export class LoginFormComponent implements OnInit {
     private auth: AuthService,
     private errorHandler: ErrorHandlerService,
     private router: Router,
+    private title: Title,
     private location: Location,
     private toasty: ToastyService
     ) { }
 
   ngOnInit() {
+    this.title.setTitle('Login')
     // if (!this.auth.isAccessTokenInvalido()) {
 
     //   this.toasty.error('Usuário já encontra-se logado')

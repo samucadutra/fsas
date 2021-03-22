@@ -56,7 +56,6 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		String mensagemDesenvolvedor = ex.getMostSpecificCause().toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-		
 	}
 	
 	@ExceptionHandler({DataIntegrityViolationException.class})

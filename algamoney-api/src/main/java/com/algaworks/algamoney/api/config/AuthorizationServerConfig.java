@@ -38,10 +38,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G") // @ngul@r0 utilizando a classe GeradorSenha.java
 		.scopes("read","write")
 		.authorizedGrantTypes("password", "refresh_token")
+		// .accessTokenValiditySeconds(15)
 		.accessTokenValiditySeconds(1800)
+		// .refreshTokenValiditySeconds(30)
 		.refreshTokenValiditySeconds(3600 * 24)
 		
-		// daqui pra baixo supondo que tenha outro cliente com espoco somente de leitura
+		// daqui pra baixo supondo que tenha outro cliente com escopo somente de leitura
 	.and()
 		.withClient("mobile")
 		.secret("$2a$10$1msfs9gyCNqTELN9b.IX3OHBbELsbJ726MK002DspdGDf15G1FwcW") // m0b1l30
