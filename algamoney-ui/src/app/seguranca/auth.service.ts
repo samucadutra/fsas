@@ -23,6 +23,7 @@ export class AuthService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
+    // headers.append('Authorization', 'Basic YW5ndWxhcjokMmEkMTAkUjVaT1B2b1hJc1pva2JEQlB4dWEwdXQ5Uk1yak1hR0xLRVJzWHZFLk1RdzNjZ3ZnaUVJUlc=');
 
     // .append('Authorization', 'Basic ' + btoa(`${usuario}:${senha}`))
 
@@ -48,6 +49,7 @@ export class AuthService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
+    // headers.append('Authorization', 'Basic YW5ndWxhcjokMmEkMTAkUjVaT1B2b1hJc1pva2JEQlB4dWEwdXQ5Uk1yak1hR0xLRVJzWHZFLk1RdzNjZ3ZnaUVJUlc=');
 
     const body = 'grant_type=refresh_token'
 

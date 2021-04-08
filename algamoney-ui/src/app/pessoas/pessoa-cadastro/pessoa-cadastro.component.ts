@@ -7,7 +7,7 @@ import { ToastyService } from 'ng2-toasty';
 
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { Pessoa } from '../../core/model';
+import { Pessoa, Contato } from '../../core/model';
 
 @Component({
   selector: 'app-pessoa-cadastro',
@@ -18,6 +18,9 @@ export class PessoaCadastroComponent implements OnInit {
 
   pessoa = new Pessoa()
   salvando = false
+  estados: any[]
+  cidades: any[];
+  estadoSelecionado: number;
 
   constructor(
     private pessoaService: PessoaService,
@@ -34,9 +37,25 @@ export class PessoaCadastroComponent implements OnInit {
 
     this.title.setTitle('Nova pessoa')
 
+    this.carregarEstados()
+
     if (codigoPessoa) {
       this.carregarPessoa(codigoPessoa)
     }
+  }
+
+  carregarEstados() {
+    this.pessoaService.listarEstados().then(lista => {
+      this.estados = lista.map(uf => ({ label: uf.nome, value: uf.codigo }));
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  carregarCidades() {
+    this.pessoaService.pesquisarCidades(this.estadoSelecionado).then(lista => {
+      this.cidades = lista.map(c => ({ label: c.nome, value: c.codigo }));
+    })
+    .catch(erro => this.errorHandler.handle(erro));
   }
 
   get editando(){
@@ -48,6 +67,14 @@ export class PessoaCadastroComponent implements OnInit {
     this.pessoaService.buscarPorCodigo(codigo)
     .then(pessoa => {
       this.pessoa = pessoa
+
+      this.estadoSelecionado = (this.pessoa.endereco.cidade) ?
+                this.pessoa.endereco.cidade.estado.codigo : null;
+
+        if (this.estadoSelecionado) {
+          this.carregarCidades();
+        }
+
       this.atualizarTituloEdicao()
     })
     .catch(erro => this.errorHandler.handle(erro))
@@ -71,7 +98,7 @@ export class PessoaCadastroComponent implements OnInit {
       form.reset(new Pessoa())
       // this.lancamento = new Lancamento()
       this.salvando = false
-      this.router.navigate(['pessoas', pessoaAdicionada])
+      this.router.navigate(['pessoas', pessoaAdicionada.codigo])
       })
       .catch(erro => {
         this.errorHandler.handle(erro)

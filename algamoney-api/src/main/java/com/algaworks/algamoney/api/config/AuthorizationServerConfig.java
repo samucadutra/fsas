@@ -20,6 +20,63 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.algaworks.algamoney.api.config.token.CustomTokenEnhancer;
 
+// @Profile("oauth-security")
+// @Configuration
+// @EnableAuthorizationServer
+// public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+// 	@Autowired
+// 	private AuthenticationManager authenticationManager;
+	
+// 	@Override
+// 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+// 		clients.inMemory()
+// 				.withClient("angular")
+// 				.secret("@ngul@r0")
+// 				.scopes("read", "write")
+// 				.authorizedGrantTypes("password", "refresh_token")
+// 				.accessTokenValiditySeconds(1800)
+// 				.refreshTokenValiditySeconds(3600 * 24)
+// 			.and()
+// 				.withClient("mobile")
+// 				.secret("m0b1l30")
+// 				.scopes("read")
+// 				.authorizedGrantTypes("password", "refresh_token")
+// 				.accessTokenValiditySeconds(1800)
+// 				.refreshTokenValiditySeconds(3600 * 24);
+// 	}
+	
+// 	@Override
+// 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+// 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+// 		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+		
+// 		endpoints
+// 			.tokenStore(tokenStore())
+// 			.tokenEnhancer(tokenEnhancerChain)
+// 			.reuseRefreshTokens(false)
+// 			.authenticationManager(authenticationManager);
+// 	}
+	
+// 	@Bean
+// 	public JwtAccessTokenConverter accessTokenConverter() {
+// 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
+// 		accessTokenConverter.setSigningKey("algaworks");
+// 		return accessTokenConverter;
+// 	}
+
+// 	@Bean
+// 	public TokenStore tokenStore() {
+// 		return new JwtTokenStore(accessTokenConverter());
+// 	}
+	
+// 	@Bean
+// 	public TokenEnhancer tokenEnhancer() {
+// 	    return new CustomTokenEnhancer();
+// 	}
+	
+// }
+
 @Profile("oauth-security")
 @Configuration
 @EnableAuthorizationServer
@@ -35,7 +92,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 		.withClient("angular")
+		// .secret("@ngul@r0")
 		.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G") // @ngul@r0 utilizando a classe GeradorSenha.java
+		// .secret("$2a$10$R5ZOPvoXIsZokbDBPxua0ut9RMrjMaGLKERsXvE.MQw3cgvgiEIRW")
 		.scopes("read","write")
 		.authorizedGrantTypes("password", "refresh_token")
 		// .accessTokenValiditySeconds(15)

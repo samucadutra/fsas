@@ -1,3 +1,4 @@
+import { RelatoriosService } from './../relatorios/relatorios.service';
 import { RouterModule } from '@angular/router';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule, DecimalPipe, registerLocaleData  } from '@angular/common';
@@ -14,9 +15,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LancamentoService } from 'app/lancamentos/lancamento.service';
 import { PessoaService } from 'app/pessoas/pessoa.service';
 import { CategoriaService } from '../categorias/categoria.service';
-import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 import { AuthService } from 'app/seguranca/auth.service';
+import { DashboardService } from './../dashboard/dashboard.service';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
 registerLocaleData(localePt);
 
@@ -35,10 +37,12 @@ registerLocaleData(localePt);
     ConfirmDialogModule
   ],
   providers: [
-    ErrorHandlerService,
     LancamentoService,
     PessoaService,
     CategoriaService,
+    DashboardService,
+    RelatoriosService,
+    ErrorHandlerService,
     AuthService,
 
     DecimalPipe,
