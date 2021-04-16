@@ -7,8 +7,9 @@ import localePt from '@angular/common/locales/pt'
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { ToastyModule } from 'ng2-toasty';
-import { JwtHelper } from 'angular2-jwt';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { GrowlModule } from 'primeng/growl'
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -17,6 +18,7 @@ import { PessoaService } from 'app/pessoas/pessoa.service';
 import { CategoriaService } from '../categorias/categoria.service';
 import { AuthService } from 'app/seguranca/auth.service';
 import { DashboardService } from './../dashboard/dashboard.service';
+import { MoneyHttp } from './../seguranca/money-http';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
@@ -27,13 +29,13 @@ registerLocaleData(localePt);
     CommonModule,
     RouterModule,
 
-    ToastyModule.forRoot(),
+    GrowlModule,
     ConfirmDialogModule,
   ],
   declarations: [NavbarComponent, PaginaNaoEncontradaComponent, NaoAutorizadoComponent],
   exports: [
     NavbarComponent,
-    ToastyModule,
+    GrowlModule,
     ConfirmDialogModule
   ],
   providers: [
@@ -44,11 +46,13 @@ registerLocaleData(localePt);
     RelatoriosService,
     ErrorHandlerService,
     AuthService,
+    MoneyHttp,
 
     DecimalPipe,
 
     ConfirmationService,
-    JwtHelper,
+    MessageService,
+    JwtHelperService,
     Title,
     { provide: LOCALE_ID, useValue: 'pt' }
   ]

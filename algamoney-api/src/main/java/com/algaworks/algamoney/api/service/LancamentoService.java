@@ -54,7 +54,7 @@ public class LancamentoService {
 	private Mailer mailer;
 
 	// @Scheduled(fixedDelay = 1000 * 60 * 30) // 30 minutos
-	@Scheduled(cron = "0 0 6 * * *") // Mesmo padrão do Crontab
+	@Scheduled(cron = "0 5 * * * *") // Mesmo padrão do Crontab
 	public void avisarSobreLancamentosVencidos(){
 
 		if (logger.isDebugEnabled()) {

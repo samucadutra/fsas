@@ -3,7 +3,7 @@ import { DecimalPipe } from '@angular/common'
 import { Title } from '@angular/platform-browser';
 
 import { LazyLoadEvent, ConfirmationService } from 'primeng/components/common/api'
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
@@ -21,12 +21,12 @@ export class LancamentosPesquisaComponent implements OnInit {
   totalRegistros = 0
   filtro = new LancamentoFiltro();
   lancamentos = [];
-  @ViewChild('tabela') grid;
+  @ViewChild('tabela', { static: true }) grid;
 
   constructor(
     private lancamentoService: LancamentoService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private decimalPipe: DecimalPipe,
     private title: Title,
@@ -86,7 +86,7 @@ export class LancamentosPesquisaComponent implements OnInit {
           this.pesquisar(this.filtro.pagina); // pesquisa na página atual
         }
 
-        this.toasty.success('Lançamento excluído com sucesso')
+        this.messageService.add({severity: 'success', detail: 'Lançamento excluído com sucesso'})
 
       }).catch(erro => this.errorHandler.handle(erro))
   }

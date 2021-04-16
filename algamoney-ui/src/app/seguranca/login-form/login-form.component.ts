@@ -1,10 +1,10 @@
-import { ToastyService } from 'ng2-toasty';
 import { Component, OnInit } from '@angular/core';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-login-form',
@@ -19,7 +19,7 @@ export class LoginFormComponent implements OnInit {
     private router: Router,
     private title: Title,
     private location: Location,
-    private toasty: ToastyService
+    private messageService: MessageService,
     ) { }
 
   ngOnInit() {

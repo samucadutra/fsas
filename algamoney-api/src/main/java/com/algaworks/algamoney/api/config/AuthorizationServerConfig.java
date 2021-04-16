@@ -79,7 +79,7 @@ import com.algaworks.algamoney.api.config.token.CustomTokenEnhancer;
 
 @Profile("oauth-security")
 @Configuration
-@EnableAuthorizationServer
+// @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired

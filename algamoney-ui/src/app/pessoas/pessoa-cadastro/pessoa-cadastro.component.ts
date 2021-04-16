@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
@@ -24,7 +24,7 @@ export class PessoaCadastroComponent implements OnInit {
 
   constructor(
     private pessoaService: PessoaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private router: Router,
@@ -94,7 +94,10 @@ export class PessoaCadastroComponent implements OnInit {
     this.salvando = true
     this.pessoaService.adicionar(this.pessoa)
     .then((pessoaAdicionada) => {
-      this.toasty.success(`${this.pessoa.nome} adicionado(a) com sucesso!`)
+      this.messageService.add({
+        severity: 'success',
+        detail: `${this.pessoa.nome} adicionado(a) com sucesso!`
+      })
       form.reset(new Pessoa())
       // this.lancamento = new Lancamento()
       this.salvando = false
@@ -113,7 +116,10 @@ export class PessoaCadastroComponent implements OnInit {
     .then(pessoa => {
       this.pessoa = pessoa
 
-      this.toasty.success(`${pessoa.nome} alterado(a) com sucesso!`)
+      this.messageService.add({
+        severity: 'success',
+        detail: `${pessoa.nome} alterado(a) com sucesso!`
+      })
       this.atualizarTituloEdicao()
       this.salvando = false
     })

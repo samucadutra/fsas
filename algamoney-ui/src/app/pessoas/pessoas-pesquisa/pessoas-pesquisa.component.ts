@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/api';
 
 import { PessoaFiltro, PessoaService } from './../pessoa.service';
@@ -19,12 +19,12 @@ export class PessoasPesquisaComponent implements OnInit {
   totalRegistros = 0
   filtro = new PessoaFiltro();
   pessoas = [];
-  @ViewChild('tabela') grid;
+  @ViewChild('tabela', { static: true }) grid;
 
   constructor(
     private pessoaService: PessoaService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title
     ) { }
@@ -75,7 +75,10 @@ export class PessoasPesquisaComponent implements OnInit {
           this.pesquisar(this.filtro.pagina); // pesquisa na página atual
         }
 
-        this.toasty.success(`${pessoa.nome} excluído(a) com sucesso`)
+        this.messageService.add({
+          severity: 'success',
+          detail: `${pessoa.nome} excluído(a) com sucesso`
+        })
 
       }).catch(erro => this.errorHandler.handle(erro))
   }
@@ -89,7 +92,10 @@ export class PessoasPesquisaComponent implements OnInit {
         const acao = novoStatus ? 'ativado(a)' : 'desativado(a)';
 
         pessoa.ativo = novoStatus;
-        this.toasty.success(`${pessoa.nome} ${acao} com sucesso!`);
+        this.messageService.add({
+          severity: 'success',
+          detail: `${pessoa.nome} ${acao} com sucesso!`
+        });
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { PessoaService } from 'app/pessoas/pessoa.service';
 import { CategoriaService } from './../../categorias/categoria.service';
@@ -28,12 +28,13 @@ export class LancamentoCadastroComponent implements OnInit {
   // lancamento = new Lancamento();
   formulario: FormGroup
   salvando = false
+  uploadEmAndamento = false;
 
   constructor(
     private pessoaService: PessoaService,
     private categoriaService: CategoriaService,
     private lancamentoService: LancamentoService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private router: Router,
@@ -55,6 +56,50 @@ export class LancamentoCadastroComponent implements OnInit {
     this.carregarCategorias()
     this.carregarPessoas()
   }
+
+  antesUploadAnexo(event) {
+    event.xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+
+    this.uploadEmAndamento = true;
+  }
+
+  aoTerminarUploadAnexo(event) {
+    const anexo = JSON.parse(event.xhr.response);
+
+    this.formulario.patchValue({
+      anexo: anexo.nome,
+      urlAnexo: anexo.url
+    });
+
+    this.uploadEmAndamento = false;
+  }
+
+  erroUpload(event) {
+    this.messageService.add({ severity: 'error', detail: 'Erro ao tentar enviar anexo!' });
+
+    this.uploadEmAndamento = false;
+  }
+
+  removerAnexo() {
+    this.formulario.patchValue({
+      anexo: null,
+      urlAnexo: null
+    });
+  }
+
+  get nomeAnexo() {
+    const nome = this.formulario.get('anexo').value;
+
+    if (nome) {
+      return nome.substring(nome.indexOf('_') + 1, nome.length);
+    }
+
+    return '';
+  }
+
+  // get urlUploadAnexo() {
+  //   return this.lancamentoService.urlUploadAnexo();
+  // }
 
   configurarFormulario() {
 
@@ -117,7 +162,9 @@ export class LancamentoCadastroComponent implements OnInit {
     this.salvando = true
     this.lancamentoService.adicionar(this.formulario.value)
       .then(lancamentoAdicionado => {
-        this.toasty.success('Lançamento adicionado com sucesso!')
+        this.messageService.add({
+          severity: 'success',
+          detail: 'Lançamento adicionado com sucesso!' });
         //form.reset(new Lancamento())
         // this.lancamento = new Lancamento()
         this.salvando = false
@@ -137,7 +184,9 @@ export class LancamentoCadastroComponent implements OnInit {
         // this.lancamento = lancamento
         this.formulario.patchValue(lancamento)
 
-        this.toasty.success('Lançamento alterado com sucesso!')
+        this.messageService.add({
+          severity: 'success',
+          detail: 'Lançamento alterado com sucesso!' });
         this.atualizarTituloEdicao()
         this.salvando = false
       })
